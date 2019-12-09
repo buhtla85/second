@@ -1,0 +1,33 @@
+{
+  "name": "weather-app",
+  "version": "0.1.0",
+  "description": "A little pratice for fetch API",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/buhtla85/second.git"
+  },
+  "author": "Tamara Naunovic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/buhtla85/second/issues"
+  },
+  "homepage": "https://github.com/buhtla85/second#readme",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.15",
+    "@types/react": "^16.9.16",
+    "@types/react-dom": "^16.9.4",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  }
+}
