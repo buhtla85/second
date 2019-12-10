@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var React = require("react");
+;
 exports.Navbar = function (props) {
     return (React.createElement("nav", { style: navStyle },
         React.createElement("h1", { style: titleStyle }, props.title)));
@@ -16,5 +17,6 @@ var navStyle = {
     background: "#ff6f61"
 };
 var titleStyle = {
-    color: "#fff"
+    color: "#fff",
+    fontSize: "2rem"
 };
