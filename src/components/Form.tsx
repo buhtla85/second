@@ -16,7 +16,8 @@ export class Form extends React.Component<{}, IStateForm> {
     }
 
     handleInputs = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({[event.target.name]: event.target.value} as {[ K in keyof IStateForm]: IStateForm[K]});
+        this.setState({[event.target.name]: event.target.value} as { [K in keyof IStateForm]: IStateForm[K] });
+    
     }
 
     render () {
