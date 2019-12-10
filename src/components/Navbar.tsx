@@ -2,7 +2,7 @@ import * as React from 'react';
 
 interface NavProps {
     title: string
-}
+};
 
 export const Navbar = (props: NavProps) => {
     return (
@@ -14,7 +14,7 @@ export const Navbar = (props: NavProps) => {
 
 const navStyle = {
   display: "flex",
-  justifyContent: "spaceBetween",
+  justifyContent: "center",
   alignItems: "center",
   padding: "0.7rem 2rem",
   width: "100%",
@@ -24,5 +24,6 @@ const navStyle = {
 };
 
 const titleStyle = {
-    color: "#fff"
+    color: "#fff",
+    fontSize: "2rem",
 };
