@@ -1,9 +1,12 @@
 import * as React from "react";
+import { Navbar } from "./components/Navbar";
+import { Form } from "./components/Form";
 
 const App = () => {
     return (
         <React.Fragment>
-            <div className="primary-color">Hello World!</div>
+            <Navbar title="React TS Weather App" />
+            <Form />
         </React.Fragment>
     );
 }
