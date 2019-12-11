@@ -44,7 +44,7 @@ export class Form extends React.Component<{}, IStateForm> {
                 cityName: response.name,
                 countryName: response.sys.country,
                 errMessage: "",
-                temperature: response.main.temp - 273.15,
+                temperature: Math.round(response.main.temp - 273.15),
                 humidity: response.main.humidity,
                 pressure: response.main.pressure,
                 description: response.weather[0].description,
