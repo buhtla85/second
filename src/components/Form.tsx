@@ -10,11 +10,12 @@ interface IStateForm {
     description: string,
     icon: string,
     pressure: number | null,
-    humidity: number | null
+    humidity: number | null,
+    isButtonVisible: boolean
 }
 
 function weatherObject() {
-    return {cityName: "", countryName: "", errMessage: "", temperature: null, description: "", icon: "", pressure: null, humidity: null}
+    return {cityName: "", countryName: "", errMessage: "", temperature: null, description: "", icon: "", pressure: null, humidity: null, isButtonVisible: false}
 }
 
 export class Form extends React.Component<{}, IStateForm> {
@@ -43,11 +44,12 @@ export class Form extends React.Component<{}, IStateForm> {
                 cityName: response.name,
                 countryName: response.sys.country,
                 errMessage: "",
-                temperature: response.main.temp,
+                temperature: response.main.temp - 273.15,
                 humidity: response.main.humidity,
                 pressure: response.main.pressure,
                 description: response.weather[0].description,
-                icon: response.weather[0].icon
+                icon: response.weather[0].icon,
+                isButtonVisible: true
             });
         } else {
             this.setState({errMessage: "Please be sure to enter valid values to both fields."});
@@ -55,6 +57,10 @@ export class Form extends React.Component<{}, IStateForm> {
                 this.setState({errMessage: ""});
             }, 5000)
         } 
+    }
+
+    handleReset = () => {
+        this.setState(weatherObject());
     }
 
     render () {
@@ -75,7 +81,9 @@ export class Form extends React.Component<{}, IStateForm> {
                     pressure={this.state.pressure}
                     humidity={this.state.humidity}
                     icon={this.state.icon}
-                    description={this.state.description} />
+                    description={this.state.description}
+                    showButton={this.state.isButtonVisible}
+                    handleButtonClick={this.handleReset} />
             </section>
         );
     }
