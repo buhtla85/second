@@ -19,7 +19,6 @@ const navStyle = {
   padding: "0.7rem 2rem",
   width: "100%",
   opacity: "0.9",
-  marginBottom: "1rem",
   background: "#ff6f61"
 };
 
