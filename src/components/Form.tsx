@@ -1,19 +1,20 @@
 import * as React from "react";
 import { myKey } from "../sensitive";
+import { DisplayWeather } from "./DisplayWeatherConditions";
  
 interface IStateForm {
     cityName: string,
     countryName: string,
     errMessage: string,
-    temperature: number,
+    temperature: number | null,
     description: string,
     icon: string,
-    pressure: number,
-    humidity: number
+    pressure: number | null,
+    humidity: number | null
 }
 
 function weatherObject() {
-    return {cityName: "", countryName: "", errMessage: "", temperature: 0, description: "", icon: "", pressure: 0, humidity: 0}
+    return {cityName: "", countryName: "", errMessage: "", temperature: null, description: "", icon: "", pressure: null, humidity: null}
 }
 
 export class Form extends React.Component<{}, IStateForm> {
@@ -31,35 +32,50 @@ export class Form extends React.Component<{}, IStateForm> {
         this.setState({countryName: event.target.value});
     }
 
-    fetchWeatherConditions = (event: React.FormEvent<HTMLFormElement>) => {
+    fetchWeatherConditions = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const {cityName, countryName} = this.state;
-        const endpoint = `http://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryName}&APPID=${myKey}`;
+        const hitApi = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryName}&APPID=${myKey}`);
+        const response = await hitApi.json();
 
-        // if(cityName.length && countryName.length <= 0) {
-        //     this.setState({errMessage: "Please be sure to add city and country."});
-        //     setTimeout(() => {
-        //         this.setState({errMessage: ""})
-        //     }, 5000);
-        // } else {
-        //     fetch(endpoint)
-        //         .then((response) => response.json())
-        //         .then((data) => {
-        //         //console.log(data);
-        //     });
-        // } 
+        if(cityName && countryName) {
+            this.setState({
+                cityName: response.name,
+                countryName: response.sys.country,
+                errMessage: "",
+                temperature: response.main.temp,
+                humidity: response.main.humidity,
+                pressure: response.main.pressure,
+                description: response.weather[0].description,
+                icon: response.weather[0].icon
+            });
+        } else {
+            this.setState({errMessage: "Please be sure to enter valid values to both fields."});
+            setTimeout(() => {
+                this.setState({errMessage: ""});
+            }, 5000)
+        } 
     }
 
     render () {
         return (
-            <section className="container pt-3">
+            <section id="main" className="pt-5">
                 <form action="" className="form-inline d-flex justify-content-center" onSubmit={this.fetchWeatherConditions}>
                     <label htmlFor="inlineFormInputCity2" className="sr-only">City</label>
                     <input type="text" value={this.state.cityName} name="cityName" onChange={this.handleCityInput} className="form-control mb-2 mr-sm-2" id="inlineFormInputCity2" placeholder="City"/>
                     <label htmlFor="inlineFormInputCountry2" className="sr-only">Country</label>
                     <input type="text" value={this.state.countryName} name="countryName" onChange={this.handleCountryInput} className="form-control mb-2 mr-sm-2" id="inlineFormInputCountry2" placeholder="Country"/>
-                    <button type="submit" className="btn btn-outline-secondary mb-2">Search</button>
+                    <button type="submit" className="btn btn-outline-light mb-2">Search</button>
                 </form>
+                <DisplayWeather 
+                    temperature={this.state.temperature} 
+                    cityName={this.state.cityName} 
+                    countryName={this.state.countryName} 
+                    errMessage={this.state.errMessage}
+                    pressure={this.state.pressure}
+                    humidity={this.state.humidity}
+                    icon={this.state.icon}
+                    description={this.state.description} />
             </section>
         );
     }
