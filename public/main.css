@@ -4,6 +4,7 @@
     padding: 0;
   }
 
+  /*this will have to change on mobile toggle view!*/
   #main {
     height: 100vh;
     background-color: #9F9C99;
