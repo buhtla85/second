@@ -1,5 +1,5 @@
 import * as React from "react";
-import { myKey } from "../sensitive";
+import { myKey, apiResponse } from "../sensitive";
 import { DisplayWeather } from "./DisplayWeatherConditions";
  
 interface IStateForm {
@@ -24,20 +24,16 @@ export class Form extends React.Component<{}, IStateForm> {
         this.state = weatherObject();     
     }
 
-    handleCityInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleCityInput = (event: React.ChangeEvent<HTMLInputElement>) =>  this.setState({cityName: event.target.value});
         //this.setState({[event.target.name]: event.target.value} as { [K in keyof IStateForm]: IStateForm[K] });
-        this.setState({cityName: event.target.value})
-    }
-
-    handleCountryInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({countryName: event.target.value});
-    }
-
+    
+    handleCountryInput = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({countryName: event.target.value});
+    
     fetchWeatherConditions = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const {cityName, countryName} = this.state;
         const hitApi = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryName}&APPID=${myKey}`);
-        const response = await hitApi.json();
+        const response: apiResponse = await hitApi.json();
 
         if(cityName && countryName) {
             this.setState({
@@ -59,10 +55,8 @@ export class Form extends React.Component<{}, IStateForm> {
         } 
     }
 
-    handleReset = () => {
-        this.setState(weatherObject());
-    }
-
+    handleReset = () => this.setState(weatherObject());
+    
     render () {
         return (
             <section id="main" className="pt-5">
