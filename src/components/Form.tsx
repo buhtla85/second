@@ -4,7 +4,6 @@ import { DisplayWeather } from "./DisplayWeatherConditions";
  
 interface IStateForm {
     cityName: string,
-    countryName: string,
     errMessage: string,
     temperature: number | null,
     description: string,
@@ -14,31 +13,45 @@ interface IStateForm {
     isButtonVisible: boolean
 }
 
+
 function weatherObject() {
-    return {cityName: "", countryName: "", errMessage: "", temperature: null, description: "", icon: "", pressure: null, humidity: null, isButtonVisible: false}
+    return {cityName: "", errMessage: "", temperature: null, description: "", icon: "", pressure: null, humidity: null, isButtonVisible: false}
 }
 
 export class Form extends React.Component<{}, IStateForm> {
     constructor(props:any) {
         super(props);
-        this.state = weatherObject();     
+        this.state = weatherObject();
+        // localStorage.setItem("city", this.state.cityName);
+        // this.setState({ cityName: localStorage.getItem("city") });     
+    }
+
+    componentDidMount() {
+        fetch(`http://api.openweathermap.org/data/2.5/weather?q=Belgrade&APPID=${myKey}`)
+            .then(res => res.json())
+            .then((data: apiResponse) => this.setState({
+                cityName: data.name, 
+                errMessage: "", 
+                temperature: Math.round(data.main.temp - 273.15),
+                humidity: data.main.humidity,
+                pressure: data.main.pressure,
+                description: data.weather[0].description,
+                icon: data.weather[0].icon,
+                isButtonVisible: true
+            }))
     }
 
     handleCityInput = (event: React.ChangeEvent<HTMLInputElement>) =>  this.setState({cityName: event.target.value});
         //this.setState({[event.target.name]: event.target.value} as { [K in keyof IStateForm]: IStateForm[K] });
-    
-    handleCountryInput = (event: React.ChangeEvent<HTMLInputElement>) => this.setState({countryName: event.target.value});
-    
-    fetchWeatherConditions = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const {cityName, countryName} = this.state;
-        const hitApi = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryName}&APPID=${myKey}`);
+        
+    fetchWeatherConditions = async () => {
+        const {cityName} = this.state;
+        const hitApi = await fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&APPID=${myKey}`);
         const response: apiResponse = await hitApi.json();
 
-        if(cityName && countryName) {
+        if(cityName) {
             this.setState({
                 cityName: response.name,
-                countryName: response.sys.country,
                 errMessage: "",
                 temperature: Math.round(response.main.temp - 273.15),
                 humidity: response.main.humidity,
@@ -60,17 +73,14 @@ export class Form extends React.Component<{}, IStateForm> {
     render () {
         return (
             <section id="main" className="pt-5">
-                <form action="" className="form-inline d-flex justify-content-center" onSubmit={this.fetchWeatherConditions}>
+                <form action="" className="form-inline d-flex justify-content-center" onSubmit={e => e.preventDefault() as any || this.fetchWeatherConditions()}>
                     <label htmlFor="inlineFormInputCity2" className="sr-only">City</label>
                     <input type="text" value={this.state.cityName} name="cityName" onChange={this.handleCityInput} className="form-control mb-2 mr-sm-2" id="inlineFormInputCity2" placeholder="City"/>
-                    <label htmlFor="inlineFormInputCountry2" className="sr-only">Country</label>
-                    <input type="text" value={this.state.countryName} name="countryName" onChange={this.handleCountryInput} className="form-control mb-2 mr-sm-2" id="inlineFormInputCountry2" placeholder="Country"/>
                     <button type="submit" className="btn btn-outline-light mb-2">Search</button>
                 </form>
                 <DisplayWeather 
                     temperature={this.state.temperature} 
                     cityName={this.state.cityName} 
-                    countryName={this.state.countryName} 
                     errMessage={this.state.errMessage}
                     pressure={this.state.pressure}
                     humidity={this.state.humidity}
