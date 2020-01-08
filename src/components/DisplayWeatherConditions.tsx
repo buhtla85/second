@@ -8,6 +8,7 @@ interface IConditionsProps {
     icon: string,
     pressure: number,
     humidity: number,
+    wind: number,
     showButton: boolean,
     handleButtonClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -21,6 +22,7 @@ export const DisplayWeather = (props: IConditionsProps) => {
             {props.description && <h3 className="text-white font-weight-light pb-1">Conditions: {props.description}</h3>}
             {props.humidity && <h3 className="text-white font-weight-light pb-1">Humidity: {props.humidity} %</h3>}
             {props.pressure && <h3 className="text-white font-weight-light pb-1">Pressure: {props.pressure} mb</h3>}
+            {props.wind && <h3 className="text-white font-weight-light pb-1">Wind speed: {props.wind} m/s</h3>}
             {props.errMessage && <h3 className="text-white font-weight-light pb-1">{props.errMessage}</h3>}
             {props.showButton && <button type="button" className="btn btn-warning mt-3" onClick={props.handleButtonClick}>Reset</button>}
         </section>
