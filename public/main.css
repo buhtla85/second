@@ -3,9 +3,12 @@
     margin: 0;
     padding: 0;
   }
+  
+  body {
+    position: relative;
+  }
 
-  /*this will have to change on mobile toggle view!*/
   #main {
-    height: 100vh;
-    background-color: #dad6d1;
+    min-height: 100vh;
+    background-color: #afafaf;
   }
