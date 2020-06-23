@@ -8,8 +8,8 @@ npm run build
 
 ``` 
 ## Screenshots:
-<img src="images/weather1.png" widht="300" /> <img src="images/weather2.png" widht="300" /> 
-<img src="images/weather3.png" widht="300" /> 
+<img src="images/weather1.png" width="300" /> <img src="images/weather2.png" width="300" /> 
+<img src="images/weather3.png" width="300" /> 
 
 ## Technologies: 
 React, Typescript, Bootstrap 4
